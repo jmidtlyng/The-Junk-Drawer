@@ -1,8 +1,9 @@
 use std::net::TcpListener;
 use std::collections::HashMap;
-use core::runner::run;
+//use core::runner::run;
 use sailfish::TemplateOnce;
-
+use glob::glob;
+/*
 pub struct TestApp {
     pub address: String
 }
@@ -22,7 +23,7 @@ async fn server_check() {
 
     //routes_check(app, client).await;
 }
-
+*/
 #[derive(TemplateOnce)]
 #[template(path = "hello.stpl")]
 struct HelloTemplate {
@@ -33,7 +34,15 @@ struct HelloTemplate {
 //async fn sailfish_check(app: TestApp, client: reqwest::Client)
 
 #[actix_rt::test]
-async fn sailfish_check(){
+async fn ayayi_check(){
+    for entry in glob("../templates/**/*.stpl").expect("Failed to read glob pattern") {
+        match entry {
+            Ok(path) => println!("{:?}", path.display()),
+            Err(e) => println!("{:?}", e),
+        }
+    }
+    
+    /*
     let ctx = HelloTemplate {
         messages: vec![String::from("foo"), String::from("bar")],
     };
@@ -50,6 +59,7 @@ async fn sailfish_check(){
 </body>
 </html>";
     assert_eq!(render_html, assertion_html);
+    */
 }
 /*
     async fn routes_check(app: TestApp, client: reqwest::Client) {
@@ -58,6 +68,15 @@ async fn sailfish_check(){
         routes.insert("", views::templates::index::html());
         routes.insert("map", views::templates::map::html());
         routes.insert("details", views::templates::details::html());
+        
+        
+        for entry in glob("/templates").expect("Failed to read glob pattern") {
+            match entry {
+                Ok(path) => println!("{:?}", path.display()),
+                Err(e) => println!("{:?}", e),
+            }
+        }
+        
     
         for (route, template) in routes {
             let uri = &format!("{}/{}", &app.address, route);

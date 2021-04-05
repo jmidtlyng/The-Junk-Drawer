@@ -1,6 +1,8 @@
 use actix_web::{get, web, HttpResponse, Responder};
+/*
 use views;
-
+#[macro_export]
+macro_rules! 
 #[get("/")]
 async fn index() -> impl Responder {
     let html = views::templates::index::html();
@@ -30,3 +32,4 @@ pub fn config(cfg: &mut web::ServiceConfig) {
         .service(map)
         .service(details);
 }
+*/

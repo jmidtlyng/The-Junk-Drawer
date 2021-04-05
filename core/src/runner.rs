@@ -1,4 +1,4 @@
-use crate::routes::html;
+/*use crate::routes::html;
 use actix_web::{App, HttpServer};
 use tracing_actix_web::TracingLogger;
 use actix_web::dev::Server;
@@ -15,3 +15,4 @@ pub fn run(listener: TcpListener) -> Result<Server, std::io::Error> {
 
     Ok(server)
 }
+*/
