@@ -3,6 +3,8 @@ use std::collections::HashMap;
 //use core::runner::run;
 use sailfish::TemplateOnce;
 use glob::glob;
+use assist:Assist;
+use assist_derive:Assist;
 /*
 pub struct TestApp {
     pub address: String
@@ -31,18 +33,26 @@ struct HelloTemplate {
     messages: Vec<String>,
 }
 
-//async fn sailfish_check(app: TestApp, client: reqwest::Client)
+#[derive(Assist)]
+struct Templates;
 
 #[actix_rt::test]
+fn macro_check(){
+    Templates::assist();
+}
+
+//async fn sailfish_check(app: TestApp, client: reqwest::Client)
+
+/*
+#[actix_rt::test]
 async fn ayayi_check(){
-    for entry in glob("../templates/**/*.stpl").expect("Failed to read glob pattern") {
+    for entry in glob("../templates/- * fix me *- /*.stpl").expect("Failed to read glob pattern") {
         match entry {
             Ok(path) => println!("{:?}", path.display()),
             Err(e) => println!("{:?}", e),
         }
     }
     
-    /*
     let ctx = HelloTemplate {
         messages: vec![String::from("foo"), String::from("bar")],
     };
@@ -59,8 +69,8 @@ async fn ayayi_check(){
 </body>
 </html>";
     assert_eq!(render_html, assertion_html);
-    */
 }
+*/
 /*
     async fn routes_check(app: TestApp, client: reqwest::Client) {
         let mut routes = HashMap::new();
