@@ -3,28 +3,9 @@ use std::collections::HashMap;
 //use core::runner::run;
 use sailfish::TemplateOnce;
 use glob::glob;
-use assist:Assist;
-use assist_derive:Assist;
 /*
-pub struct TestApp {
-    pub address: String
-}
-
-async fn spawn_app() -> TestApp {
-    let listener = TcpListener::bind("127.0.0.1:0").expect("Failed to bind to random port");
-    let port = listener.local_addr().unwrap().port();
-    let address = format!("http://127.0.0.1:{}", port);
-    let server = run(listener).expect("Failed to bind address");
-    let _ = tokio::spawn(server);
-    TestApp { address }
-}
-
-async fn server_check() {
-    let app = spawn_app().await;
-    let client = reqwest::Client::new();
-
-    //routes_check(app, client).await;
-}
+    use assist::Assist;
+    use assist_derive::Assist;
 */
 #[derive(TemplateOnce)]
 #[template(path = "hello.stpl")]
@@ -33,26 +14,8 @@ struct HelloTemplate {
     messages: Vec<String>,
 }
 
-#[derive(Assist)]
-struct Templates;
-
-#[actix_rt::test]
-fn macro_check(){
-    Templates::assist();
-}
-
-//async fn sailfish_check(app: TestApp, client: reqwest::Client)
-
-/*
 #[actix_rt::test]
 async fn ayayi_check(){
-    for entry in glob("../templates/- * fix me *- /*.stpl").expect("Failed to read glob pattern") {
-        match entry {
-            Ok(path) => println!("{:?}", path.display()),
-            Err(e) => println!("{:?}", e),
-        }
-    }
-    
     let ctx = HelloTemplate {
         messages: vec![String::from("foo"), String::from("bar")],
     };
@@ -70,8 +33,39 @@ async fn ayayi_check(){
 </html>";
     assert_eq!(render_html, assertion_html);
 }
-*/
+
+
+//async fn sailfish_check(app: TestApp, client: reqwest::Client)
+
 /*
+    pub struct TestApp {
+        pub address: String
+    }
+    
+    #[derive(Assist)]
+    struct Templates;
+    
+    #[actix_rt::test]
+    async fn macro_check(){
+        Templates::assist();
+    }
+    
+    async fn spawn_app() -> TestApp {
+        let listener = TcpListener::bind("127.0.0.1:0").expect("Failed to bind to random port");
+        let port = listener.local_addr().unwrap().port();
+        let address = format!("http://127.0.0.1:{}", port);
+        let server = run(listener).expect("Failed to bind address");
+        let _ = tokio::spawn(server);
+        TestApp { address }
+    }
+    
+    async fn server_check() {
+        let app = spawn_app().await;
+        let client = reqwest::Client::new();
+    
+        // routes_check(app, client).await;
+    }
+    
     async fn routes_check(app: TestApp, client: reqwest::Client) {
         let mut routes = HashMap::new();
     

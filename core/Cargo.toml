@@ -23,7 +23,9 @@ tracing-bunyan-formatter = "0.1.7"
 tracing-futures = "0.2.4"
 tracing-log = "0.1.1"
 tracing-subscriber = { version = "0.2.12", features = ["registry", "env-filter"] }
-sailfish = "0.3.2"
+sailfish = "0.3.3"
+assist = { path = "src/assist" }
+assist_derive = { path = "src/assist/assist_derive" }
 
 [dev-dependencies]
 lazy_static = "1.4.0"
