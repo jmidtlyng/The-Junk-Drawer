@@ -2,35 +2,49 @@ use std::net::TcpListener;
 use std::collections::HashMap;
 //use core::runner::run;
 use sailfish::TemplateOnce;
-use glob::glob;
 /*
+    use glob::glob;
     use assist::Assist;
     use assist_derive::Assist;
 */
+
+pub struct TestApp {
+    pub address: String
+}
+
+async fn spawn_app() -> TestApp {
+    let listener = TcpListener::bind("127.0.0.1:0").expect("Failed to bind to random port");
+    let port = listener.local_addr().unwrap().port();
+    let address = format!("http://127.0.0.1:{}", port);
+    let server = run(listener).expect("Failed to bind address");
+    let _ = tokio::spawn(server);
+    TestApp { address }
+}
+
+#[actix_rt::test]
+async fn server_check() {
+    let app = spawn_app().await;
+    let client = reqwest::Client::new();
+
+    template_rendering(app, client).await;
+}
+
 #[derive(TemplateOnce)]
-#[template(path = "hello.stpl")]
-struct HelloTemplate {
+#[template(path = "admin/index.stpl")]
+struct AdminTemplate {
     // data to be passed to the template
     messages: Vec<String>,
 }
 
 #[actix_rt::test]
-async fn ayayi_check(){
-    let ctx = HelloTemplate {
+async fn template_rendering(app: TestApp, client: reqwest::Client){
+    let ctx = AdminTemplate {
         messages: vec![String::from("foo"), String::from("bar")],
     };
     let render_html = ctx.render_once().unwrap();
     // Now render templates with given data
     // println!("{}", ctx);
-    let assertion_html = "<html>
-<body>
-
-<div>foo</div>
-
-<div>bar</div>
-
-</body>
-</html>";
+    
     assert_eq!(render_html, assertion_html);
 }
 
@@ -38,25 +52,12 @@ async fn ayayi_check(){
 //async fn sailfish_check(app: TestApp, client: reqwest::Client)
 
 /*
-    pub struct TestApp {
-        pub address: String
-    }
-    
     #[derive(Assist)]
     struct Templates;
     
     #[actix_rt::test]
     async fn macro_check(){
         Templates::assist();
-    }
-    
-    async fn spawn_app() -> TestApp {
-        let listener = TcpListener::bind("127.0.0.1:0").expect("Failed to bind to random port");
-        let port = listener.local_addr().unwrap().port();
-        let address = format!("http://127.0.0.1:{}", port);
-        let server = run(listener).expect("Failed to bind address");
-        let _ = tokio::spawn(server);
-        TestApp { address }
     }
     
     async fn server_check() {
