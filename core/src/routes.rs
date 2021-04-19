@@ -26,10 +26,10 @@ async fn details() -> impl Responder {
         .content_type("text/html; charset=utf-8")
         .body(html)
 }
+*/
 
 pub fn config(cfg: &mut web::ServiceConfig) {
     cfg.service(index)
         .service(map)
         .service(details);
 }
-*/

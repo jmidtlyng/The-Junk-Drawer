@@ -1,5 +1,5 @@
 //mod api;
-pub mod html;
+pub mod routes;
 
 //pub use api::*;
-pub use html::*;
+pub use routes::*;

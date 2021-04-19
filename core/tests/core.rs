@@ -38,16 +38,28 @@ struct AdminTemplate {
 
 #[actix_rt::test]
 async fn template_rendering(app: TestApp, client: reqwest::Client){
+    let route = "admin";
+    let uri = &format!("{}/{}", &app.address, route);
+    let response = client
+        .get("/admin")
+        .send()
+        .await
+        .expect("Failed to execute request.");
+    let response_html = response.text().await.unwrap();
+    
     let ctx = AdminTemplate {
         messages: vec![String::from("foo"), String::from("bar")],
     };
-    let render_html = ctx.render_once().unwrap();
+    let template_html = ctx.render_once().unwrap();
+        
     // Now render templates with given data
     // println!("{}", ctx);
     
-    assert_eq!(render_html, assertion_html);
+    println!(template_html);
+    println!(response_html);
+    
+    assert_eq!(template_html, response_html);
 }
-
 
 //async fn sailfish_check(app: TestApp, client: reqwest::Client)
 
