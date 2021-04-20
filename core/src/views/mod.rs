@@ -1,5 +1,4 @@
+pub mod admin;
 //mod api;
-pub mod routes;
-
 //pub use api::*;
-pub use routes::*;
+//pub use admin::*;

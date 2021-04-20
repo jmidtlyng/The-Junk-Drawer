@@ -1,4 +1,5 @@
-use actix_web::{get, web, HttpResponse, Responder};
+use actix_web::web;
+mod views;
 /*
 use views;
 #[macro_export]
@@ -29,7 +30,7 @@ async fn details() -> impl Responder {
 */
 
 pub fn config(cfg: &mut web::ServiceConfig) {
-    cfg.service(index)
-        .service(map)
-        .service(details);
+    let admin_scope = web::scope("/admin").service(views::admin_template);
+    
+    cfg.service( admin_scope );
 }
