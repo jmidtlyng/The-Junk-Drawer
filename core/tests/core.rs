@@ -1,12 +1,6 @@
 use std::net::TcpListener;
-use std::collections::HashMap;
-//use core::runner::run;
+use core::server::serve;
 use sailfish::TemplateOnce;
-/*
-    use glob::glob;
-    use assist::Assist;
-    use assist_derive::Assist;
-*/
 
 pub struct TestApp {
     pub address: String
@@ -16,7 +10,7 @@ async fn spawn_app() -> TestApp {
     let listener = TcpListener::bind("127.0.0.1:0").expect("Failed to bind to random port");
     let port = listener.local_addr().unwrap().port();
     let address = format!("http://127.0.0.1:{}", port);
-    let server = run(listener).expect("Failed to bind address");
+    let server = serve(listener).expect("Failed to bind address");
     let _ = tokio::spawn(server);
     TestApp { address }
 }
@@ -32,16 +26,15 @@ async fn server_check() {
 #[derive(TemplateOnce)]
 #[template(path = "admin/index.stpl")]
 struct AdminTemplate {
-    // data to be passed to the template
     messages: Vec<String>,
 }
 
-#[actix_rt::test]
 async fn template_rendering(app: TestApp, client: reqwest::Client){
-    let route = "admin";
+    let route = "admin/entities";
     let uri = &format!("{}/{}", &app.address, route);
+    println!("{}", uri);
     let response = client
-        .get("/admin")
+        .get(uri)
         .send()
         .await
         .expect("Failed to execute request.");
@@ -55,8 +48,8 @@ async fn template_rendering(app: TestApp, client: reqwest::Client){
     // Now render templates with given data
     // println!("{}", ctx);
     
-    println!(template_html);
-    println!(response_html);
+    println!("{}", response_html);
+    println!("{}", template_html);
     
     assert_eq!(template_html, response_html);
 }

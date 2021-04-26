@@ -4,12 +4,12 @@ use actix_web::{get, HttpResponse, Responder};
 use sailfish::TemplateOnce;
 
 #[derive(TemplateOnce)]
-#[template(path = "admin/index.stpl")]
+#[template(path = "admin/entities/index.stpl")]
 struct AdminTemplate {
 	messages: Vec<String>,
 }
 
-#[get("")]
+#[get("/entities")]
 async fn get() -> impl Responder {
 	let messages = vec![String::from("foo"), String::from("bar")];
 
