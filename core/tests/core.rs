@@ -30,7 +30,7 @@ struct AdminTemplate {
 }
 
 async fn template_rendering(app: TestApp, client: reqwest::Client){
-    let route = "admin/entities";
+    let route = "admin";
     let uri = &format!("{}/{}", &app.address, route);
     println!("{}", uri);
     let response = client
