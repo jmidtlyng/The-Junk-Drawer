@@ -24,7 +24,7 @@ async fn server_check() {
 }
 
 #[derive(TemplateOnce)]
-#[template(path = "admin/index.stpl")]
+#[template(path = "admin/template.stpl")]
 struct AdminTemplate {
     messages: Vec<String>,
 }
