@@ -1,8 +1,6 @@
-pub mod entities;
-
 use actix_web::error::InternalError;
 use actix_web::http::StatusCode;
-use actix_web::{get, HttpResponse, Responder};
+use actix_web::{HttpResponse, get, Responder, web};
 use sailfish::TemplateOnce;
 
 #[derive(TemplateOnce)]
@@ -21,4 +19,13 @@ async fn get() -> impl Responder {
 		.unwrap();
 
 	HttpResponse::Ok().content_type("text/html; charset=utf-8").body(html)
+}
+
+pub mod entities;
+
+pub fn config(cfg: &mut web::ServiceConfig){
+	let entities_config = web::scope("/entities").configure(entities::config);
+	
+	cfg.service(get)
+		.service(entities_config);
 }
