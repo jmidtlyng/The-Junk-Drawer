@@ -23,16 +23,26 @@ async fn server_check() {
     template_rendering(app, client).await;
 }
 
+async fn template_rendering(app: TestApp, client: reqwest::Client){
+    // define routes as tuple with address and local template for variables
+    let routes = [
+        ("admin", admin_template)
+    ];
+    
+    foreach(route in routes){
+        let uri = &format!("{}/{}", &app.address, route.0);
+        route.1(uri, client);
+    }
+}
+
+
 #[derive(TemplateOnce)]
 #[template(path = "admin/template.stpl")]
 struct AdminTemplate {
-    messages: Vec<String>,
+    //messages: Vec<String>,
 }
 
-async fn template_rendering(app: TestApp, client: reqwest::Client){
-    let route = "admin";
-    let uri = &format!("{}/{}", &app.address, route);
-    println!("{}", uri);
+async fn admin_template(uri: &str, client: reqwest::Client){
     let response = client
         .get(uri)
         .send()
@@ -41,63 +51,15 @@ async fn template_rendering(app: TestApp, client: reqwest::Client){
     let response_html = response.text().await.unwrap();
     
     let ctx = AdminTemplate {
-        messages: vec![String::from("foo"), String::from("bar")],
+        //messages: vec![String::from("foo"), String::from("bar")],
     };
     let template_html = ctx.render_once().unwrap();
         
     // Now render templates with given data
     // println!("{}", ctx);
     
-    println!("{}", response_html);
-    println!("{}", template_html);
+    //println!("{}", response_html);
+    //println!("{}", template_html);
     
     assert_eq!(template_html, response_html);
 }
-
-//async fn sailfish_check(app: TestApp, client: reqwest::Client)
-
-/*
-    #[derive(Assist)]
-    struct Templates;
-    
-    #[actix_rt::test]
-    async fn macro_check(){
-        Templates::assist();
-    }
-    
-    async fn server_check() {
-        let app = spawn_app().await;
-        let client = reqwest::Client::new();
-    
-        // routes_check(app, client).await;
-    }
-    
-    async fn routes_check(app: TestApp, client: reqwest::Client) {
-        let mut routes = HashMap::new();
-    
-        routes.insert("", views::templates::index::html());
-        routes.insert("map", views::templates::map::html());
-        routes.insert("details", views::templates::details::html());
-        
-        
-        for entry in glob("/templates").expect("Failed to read glob pattern") {
-            match entry {
-                Ok(path) => println!("{:?}", path.display()),
-                Err(e) => println!("{:?}", e),
-            }
-        }
-        
-    
-        for (route, template) in routes {
-            let uri = &format!("{}/{}", &app.address, route);
-            println!("{:?}", uri);
-            let response = client
-                .get(uri)
-                .send()
-                .await
-                .expect("Failed to execute request.");
-            let response_html = response.text().await.unwrap();
-            assert_eq!(template, response_html);
-        }
-    }
-*/
