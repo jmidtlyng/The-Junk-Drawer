@@ -1,7 +1,8 @@
 <html>
 <body>
-	<% for msg in &messages { %>
-		<div><%= msg %></div>
-	<% } %>
+	<h1>The Junk Drawer</h1>
+	<div>
+		<h2>Admin</h2>
+	</div>
 </body>
 </html>

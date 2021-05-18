@@ -1,6 +1,6 @@
 use std::net::TcpListener;
 use core::server::serve;
-use sailfish::TemplateOnce;
+use core::views;
 
 pub struct TestApp {
     pub address: String
@@ -25,41 +25,19 @@ async fn server_check() {
 
 async fn template_rendering(app: TestApp, client: reqwest::Client){
     // define routes as tuple with address and local template for variables
-    let routes = [
-        ("admin", admin_template)
+    let routes = &[
+        ("admin", views::admin::test()),
+        ("admin/entities", views::admin::entities::test()),
+        ("admin/fields", views::admin::fields::test())
     ];
     
-    foreach(route in routes){
+    for route in routes {
         let uri = &format!("{}/{}", &app.address, route.0);
-        route.1(uri, client);
-    }
-}
-
-
-#[derive(TemplateOnce)]
-#[template(path = "admin/template.stpl")]
-struct AdminTemplate {
-    //messages: Vec<String>,
-}
-
-async fn admin_template(uri: &str, client: reqwest::Client){
-    let response = client
-        .get(uri)
-        .send()
-        .await
-        .expect("Failed to execute request.");
-    let response_html = response.text().await.unwrap();
-    
-    let ctx = AdminTemplate {
-        //messages: vec![String::from("foo"), String::from("bar")],
-    };
-    let template_html = ctx.render_once().unwrap();
+        let response = client.get(uri).send().await
+            .expect("Failed to execute request.");
+        let response_html = response.text().await.unwrap();
+        //let template_html = route.1();
         
-    // Now render templates with given data
-    // println!("{}", ctx);
-    
-    //println!("{}", response_html);
-    //println!("{}", template_html);
-    
-    assert_eq!(template_html, response_html);
+        assert_eq!(route.1, response_html);
+    }
 }

@@ -1,7 +1,3 @@
-<html>
-<body>
-	<% for msg in &messages { %>
-		<div><%= msg %></div>
-	<% } %>
-</body>
-</html>
+<div>
+	<h3>Entities</h3>
+</div>

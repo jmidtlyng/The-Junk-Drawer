@@ -5,15 +5,15 @@ use sailfish::TemplateOnce;
 
 #[derive(TemplateOnce)]
 #[template(path = "admin/template.stpl")]
-struct AdminTemplate {
-	messages: Vec<String>,
+struct Template {
+	//messages: Vec<String>,
 }
 
 #[get("")]
 async fn get() -> impl Responder {
-	let messages = vec![String::from("foo"), String::from("bar")];
-
-	let html = AdminTemplate { messages }
+	//let messages = vec![String::from("foo"), String::from("bar")];
+	// let html = AdminTemplate { messages }
+	let html = Template {}
 		.render_once()
 		.map_err(|e| InternalError::new(e, StatusCode::INTERNAL_SERVER_ERROR))
 		.unwrap();
@@ -22,10 +22,18 @@ async fn get() -> impl Responder {
 }
 
 pub mod entities;
+pub mod fields;
 
 pub fn config(cfg: &mut web::ServiceConfig){
 	let entities_config = web::scope("/entities").configure(entities::config);
+	let fields_config = web::scope("/fields").configure(fields::config);
 	
 	cfg.service(get)
-		.service(entities_config);
+		.service(entities_config)
+		.service(fields_config);
+}
+
+pub fn test() -> String {
+	let ctx = Template {};
+	ctx.render_once().unwrap()
 }
