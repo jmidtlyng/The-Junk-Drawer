@@ -25,12 +25,11 @@ pub mod entities;
 pub mod fields;
 
 pub fn config(cfg: &mut web::ServiceConfig){
-	let entities_config = web::scope("/entities").configure(entities::config);
-	let fields_config = web::scope("/fields").configure(fields::config);
-	
-	cfg.service(get)
-		.service(entities_config)
-		.service(fields_config);
+	//let entities_config = web::scope("/entities").configure(entities::config);
+	//let fields_config = web::scope("/fields").configure(fields::config);
+	cfg.service(get);
+	entities::config(cfg);
+	fields::config(cfg);
 }
 
 pub fn test() -> String {

@@ -20,12 +20,13 @@ async fn server_check() {
     let app = spawn_app().await;
     let client = reqwest::Client::new();
 
-    template_rendering(app, client).await;
+    template_rendering_check(app, client).await;
+    data_check();
 }
 
-async fn template_rendering(app: TestApp, client: reqwest::Client){
+async fn template_rendering_check(app: TestApp, client: reqwest::Client){
     // define routes as tuple with address and local template for variables
-    let routes = &[
+    let routes: &[(&str, String); 3] = &[
         ("admin", views::admin::test()),
         ("admin/entities", views::admin::entities::test()),
         ("admin/fields", views::admin::fields::test())
@@ -40,4 +41,8 @@ async fn template_rendering(app: TestApp, client: reqwest::Client){
         
         assert_eq!(route.1, response_html);
     }
+}
+
+fn data_check(){
+    
 }
