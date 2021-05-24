@@ -2,17 +2,17 @@ use std::net::TcpListener;
 use core::server::serve;
 use core::views;
 
-pub struct TestApp {
+pub struct TheJunkDrawer {
     pub address: String
 }
 
-async fn spawn_app() -> TestApp {
+async fn spawn_app() -> TheJunkDrawer {
     let listener = TcpListener::bind("127.0.0.1:0").expect("Failed to bind to random port");
     let port = listener.local_addr().unwrap().port();
     let address = format!("http://127.0.0.1:{}", port);
     let server = serve(listener).expect("Failed to bind address");
     let _ = tokio::spawn(server);
-    TestApp { address }
+    TheJunkDrawer { address }
 }
 
 #[actix_rt::test]
@@ -21,11 +21,10 @@ async fn server_check() {
     let client = reqwest::Client::new();
 
     template_rendering_check(app, client).await;
-    data_check();
+    //data_check(app);
 }
 
-async fn template_rendering_check(app: TestApp, client: reqwest::Client){
-    // define routes as tuple with address and local template for variables
+async fn template_rendering_check(app: TheJunkDrawer, client: reqwest::Client){
     let routes: &[(&str, String); 3] = &[
         ("admin", views::admin::test()),
         ("admin/entities", views::admin::entities::test()),
@@ -37,12 +36,15 @@ async fn template_rendering_check(app: TestApp, client: reqwest::Client){
         let response = client.get(uri).send().await
             .expect("Failed to execute request.");
         let response_html = response.text().await.unwrap();
-        //let template_html = route.1();
         
         assert_eq!(route.1, response_html);
     }
 }
-
-fn data_check(){
+/*
+fn data_check(app: TheJunkDrawer){
+    let mut entities = app.data.entities.lock().unwrap();
+    *entities += 1;
     
+    assert_eq!(1, entities);
 }
+*/

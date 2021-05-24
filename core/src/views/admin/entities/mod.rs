@@ -2,18 +2,22 @@ use actix_web::error::InternalError;
 use actix_web::http::StatusCode;
 use actix_web::{HttpResponse, get, Responder, web};
 use sailfish::TemplateOnce;
+use crate::server::JunkDrawer;
 
 #[derive(TemplateOnce)]
 #[template(path = "admin/entities/template.stpl")]
 struct Template {
+	entities: i32
 	//messages: Vec<String>,
 }
 
 #[get("/entities")]
-async fn get() -> impl Responder {
+async fn get(data: web::Data<JunkDrawer>) -> impl Responder {
+	let mut entities = data.entities.lock().unwrap(); // <- get counter's MutexGuard
+	*entities += 1;
 	//let messages = vec![String::from("foo"), String::from("bar")];
 
-	let html = Template {}
+	let html = Template { entities }
 		.render_once()
 		.map_err(|e| InternalError::new(e, StatusCode::INTERNAL_SERVER_ERROR))
 		.unwrap();
