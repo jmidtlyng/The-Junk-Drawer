@@ -1,3 +1,4 @@
 <div>
 	<h3>Entities</h3>
+	<div><%= entities %></div> 
 </div>

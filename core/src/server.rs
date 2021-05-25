@@ -5,12 +5,12 @@ use std::net::TcpListener;
 use std::sync::Mutex;
 
 pub struct JunkDrawer {
-    entities: Mutex<i32>
+    pub junk: Mutex<i32>
 }
 
 pub fn serve(listener: TcpListener) -> Result<Server, std::io::Error> {
     let entities = web::Data::new(JunkDrawer {
-        entities: Mutex::new(0),
+        junk: Mutex::new(0),
     });
     
     let server = HttpServer::new(move || {

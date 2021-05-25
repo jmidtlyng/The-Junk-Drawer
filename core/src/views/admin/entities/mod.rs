@@ -13,11 +13,11 @@ struct Template {
 
 #[get("/entities")]
 async fn get(data: web::Data<JunkDrawer>) -> impl Responder {
-	let mut entities = data.entities.lock().unwrap(); // <- get counter's MutexGuard
+	let mut entities = data.junk.lock().unwrap(); // <- get counter's MutexGuard
 	*entities += 1;
 	//let messages = vec![String::from("foo"), String::from("bar")];
 
-	let html = Template { entities }
+	let html = Template { entities: *entities }
 		.render_once()
 		.map_err(|e| InternalError::new(e, StatusCode::INTERNAL_SERVER_ERROR))
 		.unwrap();
@@ -30,6 +30,6 @@ pub fn config(cfg: &mut web::ServiceConfig){
 }
 
 pub fn test() -> String {
-	let ctx = Template {};
+	let ctx = Template { entities: 1 };
 	ctx.render_once().unwrap()
 }
