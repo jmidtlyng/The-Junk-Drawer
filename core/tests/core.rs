@@ -21,7 +21,7 @@ async fn server_check() {
     let client = reqwest::Client::new();
 
     template_rendering_check(app, client).await;
-    //data_check(app);
+    crud_check(app, client).await;
 }
 
 async fn template_rendering_check(app: TheJunkDrawer, client: reqwest::Client){
@@ -32,6 +32,7 @@ async fn template_rendering_check(app: TheJunkDrawer, client: reqwest::Client){
     ];
     
     for route in routes {
+        evaluate_result_html
         let uri = &format!("{}/{}", &app.address, route.0);
         let response = client.get(uri).send().await
             .expect("Failed to execute request.");
@@ -40,6 +41,11 @@ async fn template_rendering_check(app: TheJunkDrawer, client: reqwest::Client){
         assert_eq!(route.1, response_html);
     }
 }
+
+async fn crud_check(app: TheJunkDrawer, client: reqwest::Client){
+    views::admin::entity_types::test();
+}
+
 /*
 fn data_check(app: TheJunkDrawer){
     let mut entities = app.data.entities.lock().unwrap();
