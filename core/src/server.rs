@@ -1,17 +1,13 @@
 use crate::router;
+use crate::models::{JunkDrawer, Junk};
 use actix_web::{App, HttpServer, dev::Server, web};
 use tracing_actix_web::TracingLogger;
 use std::net::TcpListener;
 use std::sync::Mutex;
 
-pub struct JunkDrawer {
-    pub junk: Mutex<i32>
-}
 
 pub fn serve(listener: TcpListener) -> Result<Server, std::io::Error> {
-    let entities = web::Data::new(JunkDrawer {
-        junk: Mutex::new(0),
-    });
+    let entities = web::Data::new( models::JunkDrawer );
     
     let server = HttpServer::new(move || {
         App::new()
