@@ -1,0 +1,8 @@
+<div>
+	<h3>Entities</h3>
+	<div>
+		<% for type in &entity_types { %> 
+			<div><%= type.handle %></div>
+		<% } %>
+	</div> 
+</div>

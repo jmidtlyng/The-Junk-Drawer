@@ -43,7 +43,19 @@ async fn template_rendering_check(app: TheJunkDrawer, client: reqwest::Client){
 }
 
 async fn crud_check(app: TheJunkDrawer, client: reqwest::Client){
-    views::admin::entity_types::test();
+    //views::admin::entity_types::test_create();
+    let create_uri = &format!("{}/{}", &app.address, "admin/entity_types");
+    let create_response = client.post(create_uri).send().await
+        .expect("Failed to execute request.");
+    let create_response_html = response.text().await.unwrap();
+    
+    let get_uri = &format!("{}/{}", &app.address, "admin/entity_types");
+    let get_response = client.get(get_uri).send().await
+        .expect("Failed to execute request.");
+        
+    let get_response_html = response.text().await.unwrap();
+    
+    assert_eq!(create_response_html, get_response_html);
 }
 
 /*

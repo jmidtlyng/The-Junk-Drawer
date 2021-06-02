@@ -38,6 +38,6 @@ pub fn config(cfg: &mut web::ServiceConfig){
 }
 
 pub fn test() -> String {
-	let ctx = Template { entities: 1 };
+	let ctx = Template;
 	ctx.render_once().unwrap()
 }
