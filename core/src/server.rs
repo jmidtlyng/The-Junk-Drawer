@@ -7,7 +7,7 @@ use std::sync::Mutex;
 
 
 pub fn serve(listener: TcpListener) -> Result<Server, std::io::Error> {
-    let entities = web::Data::new( models::JunkDrawer );
+    let junk = web::Data::new( JunkDrawer{ junk } );
     
     let server = HttpServer::new(move || {
         App::new()

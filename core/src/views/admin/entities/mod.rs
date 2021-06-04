@@ -12,12 +12,10 @@ struct Template {
 }
 
 #[get("/entities")]
-async fn get(data: web::Data<JunkDrawer>) -> impl Responder {
-	let mut entities = data.junk.lock().unwrap(); // <- get counter's MutexGuard
-	*entities += 1;
-	//let messages = vec![String::from("foo"), String::from("bar")];
+async fn get() -> impl Responder {
+	let entities = 1; 
 
-	let html = Template { entities: *entities }
+	let html = Template { entities }
 		.render_once()
 		.map_err(|e| InternalError::new(e, StatusCode::INTERNAL_SERVER_ERROR))
 		.unwrap();

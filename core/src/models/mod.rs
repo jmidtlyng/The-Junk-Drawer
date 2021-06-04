@@ -1,40 +1,28 @@
 use chrono::{DateTime, Utc};
 
-pub enum FieldType {
-	Assets,
-	Categories,
-	Color,
-	DateTime,
-	Dropdown,
-	Entities,
-	Lightswitch
-	Matrix
-	MultiSelect,
-	Number,
-	PlainText,
-	PositionSelect,
-	RadioButtons,
-	RichText,
-	Table,
-	Tags,
-	Users
+pub struct FieldType {
+	handle: String,
+	label: String,
+	date_created: DateTime<Utc>,
+	date_updated: DateTime<Utc>,
+	archived: bool
 }
 
 pub struct Field {
 	handle: String,
 	label: String,
-	type: FieldType,
+	r#type: FieldType,
 	date_created: DateTime<Utc>,
-	date_updated DateTime<Utc>,
+	date_updated: DateTime<Utc>,
 	archived: bool
 }
 
 pub struct Entity {
 	handle: String,
 	label: String,
-	type: EntityType,
+	r#type: EntityType,
 	date_created: DateTime<Utc>,
-	date_updated DateTime<Utc>,
+	date_updated: DateTime<Utc>,
 	archived: bool
 }
 
@@ -42,7 +30,7 @@ pub struct EntityType {
 	handle: String,
 	label: String,
 	date_created: DateTime<Utc>,
-	date_updated DateTime<Utc>,
+	date_updated: DateTime<Utc>,
 	archived: bool
 }
 
@@ -54,7 +42,7 @@ pub struct User {
 	emails: Vec<UserEmail>,
 	groups: Vec<UserGroup>,
 	date_created: DateTime<Utc>,
-	date_updated DateTime<Utc>,
+	date_updated: DateTime<Utc>,
 	archived: bool
 }
 
@@ -69,13 +57,13 @@ pub struct UserGroup {
 	last_name: String,
 	password: String,
 	date_created: DateTime<Utc>,
-	date_updated DateTime<Utc>,
+	date_updated: DateTime<Utc>,
 	archived: bool
 }
 
 pub struct Junk {
 	entity_types: Vec<EntityType>,
-	entities: Vec<Entities>,
+	entities: Vec<Entity>,
 	fields: Vec<Field>,
 	users: Vec<User>,
 	user_groups: Vec<UserGroup>
