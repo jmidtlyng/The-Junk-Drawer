@@ -32,7 +32,6 @@ async fn template_rendering_check(app: TheJunkDrawer, client: reqwest::Client){
     ];
     
     for route in routes {
-        evaluate_result_html
         let uri = &format!("{}/{}", &app.address, route.0);
         let response = client.get(uri).send().await
             .expect("Failed to execute request.");
